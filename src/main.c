@@ -10,6 +10,15 @@ bool is_running = false;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
+uint32_t* color_buffer = NULL;
+
+
+
+
+uint32_t get_pixel(int x, int y) {
+    return color_buffer[(WIDTH * y) + x];
+}
+
 bool initialize_window(void) {
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
@@ -31,7 +40,13 @@ bool initialize_window(void) {
     return true;
 }
 void setup(void) {
-    
+    // create SDL window
+    is_running = initialize_window();
+
+    color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * WIDTH * HEIGHT);
+
+    // set pixel at row 10 and column 20 to red (ARGB)
+    color_buffer[get_pixel(10, 20)] = 0xFFFF0000;
 }
 
 void process_input(void) {
@@ -58,14 +73,12 @@ void render(void) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-
     
     SDL_RenderPresent(renderer);
 }
 
 int main(void) {
-    // create SDL window
-    is_running = initialize_window();
+
     
     setup();
 
@@ -74,6 +87,12 @@ int main(void) {
         update();
         render(); 
     }
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    free(color_buffer);
 
     return 0;
 }
