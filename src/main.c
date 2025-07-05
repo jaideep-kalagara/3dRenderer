@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include <stdbool.h>
+#include <SDL2/SDL.h>
 #include "display.h"
 
 
@@ -40,7 +43,7 @@ void process_input(void) {
 }
 
 void update(void) {
-    
+// TODO: add update logic
 }
 
 
