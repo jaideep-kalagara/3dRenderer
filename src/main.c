@@ -2,6 +2,10 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+
+#define WIDTH 800
+#define HEIGHT 600
+
 bool is_running = false;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
@@ -11,7 +15,7 @@ bool initialize_window(void) {
         fprintf(stderr, "Failed to initialize SDL: %s\n", SDL_GetError());
         return false;
     }
-    window = SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_BORDERLESS);
+    window = SDL_CreateWindow(NULL, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_BORDERLESS);
     if (!window) {
         fprintf(stderr, "Failed to create window: %s\n", SDL_GetError());
         return false;
@@ -51,7 +55,7 @@ void update(void) {
 }
 
 void render(void) {
-    SDL_SetRenderDrawColor("3D Renderer", 255, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
 
