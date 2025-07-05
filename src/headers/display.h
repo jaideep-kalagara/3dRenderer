@@ -23,6 +23,7 @@ void destroy_window(void);
 // drawing
 void draw_grid(int spacing, uint32_t color);
 void draw_rect(int x, int y, int w, int h, uint32_t color);
+void draw_pixel(int x, int y, uint32_t color);
 
 // rendering
 void clear_color_buffer(uint32_t color);

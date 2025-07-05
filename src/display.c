@@ -70,6 +70,13 @@ void draw_rect(int x, int y, int w, int h, uint32_t color) {
     }
 }
 
+void draw_pixel(int x, int y, uint32_t color) {
+    if (x < 0 || x >= width || y < 0 || y >= height) {
+        return;
+    }
+    color_buffer[get_pixel(x, y)] = color;
+}
+
 void render_color_buffer(void) {
     SDL_UpdateTexture(color_buffer_texture, NULL, color_buffer, (int)width * sizeof(uint32_t));
     SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);

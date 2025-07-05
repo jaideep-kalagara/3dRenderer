@@ -1,6 +1,8 @@
+#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
+
 #include "display.h"
 
 
@@ -54,7 +56,7 @@ void render(void) {
     render_color_buffer();
 
     clear_color_buffer(0xFFFFFF00);
-    draw_rect(100, 100, 100, 100, 0xFF0000FF);
+    draw_pixel(100, 100, 0xFF0000FF);
 
     
     SDL_RenderPresent(renderer);
