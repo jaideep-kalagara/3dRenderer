@@ -51,7 +51,7 @@ void update(void) {
 }
 
 void render(void) {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_SetRenderDrawColor("3D Renderer", 255, 0, 0, 255);
     SDL_RenderClear(renderer);
 
 

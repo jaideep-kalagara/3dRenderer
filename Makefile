@@ -1,8 +1,9 @@
 build:
-	gcc -Wall -std=c99 src/*.c -Isrc/headers -lSDL2 -o out
+	mkdir -p build
+	gcc -Wall -std=c99 src/*.c -Isrc/headers -lSDL2 -o build/out
 
 run:
-	./out
+	./build/out
 
 clean:
-	rm out
+	rm -rf build
