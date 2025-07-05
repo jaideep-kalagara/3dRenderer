@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 
 #include "display.h"
-
+#include "vec.h"
 
 bool is_running = false;
 
