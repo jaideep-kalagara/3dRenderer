@@ -6,25 +6,41 @@
 #include "display.h"
 #include "vec.h"
 
+#define N_POINTS 9*9*9
+
+
+vec3_t cube_points[N_POINTS]; // 9x9x9 cube
+vec2_t projected_points[N_POINTS];
+
+
+vec3_t camera_position = { .x = 0, .y = 0, .z = -5 };
+float fov_factor = 640;
+
 bool is_running = false;
+
+vec2_t project(vec3_t point, float fov_factor) {
+    vec2_t projected_point = {
+        .x = (fov_factor * point.x) / point.z,
+        .y = (fov_factor * point.y) / point.z
+    };
+    return projected_point;
+}
 
 void setup(void) {
     // create SDL window
     is_running = initialize_window();
 
-    color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * width * height);
-    if (!color_buffer) {
-        fprintf(stderr, "Failed to allocate color buffer\n");
-        is_running = false;
+    int point_count = 0;
+    // start loading array of vectors
+    // from -1 to 1 (9x9x9 cube)
+    for (float x = -1; x <= 1; x += 0.25) {
+        for (float y = -1; y <= 1; y += 0.25) {
+            for (float z = -1; z <= 1; z += 0.25) {
+                vec3_t new_point = { x, y, z };
+                cube_points[point_count++] = new_point;
+            }
+        }
     }
-
-    color_buffer_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height);
-    if (!color_buffer_texture) {
-        fprintf(stderr, "Failed to create color buffer texture: %s\n", SDL_GetError());
-        is_running = false;
-    }
-
-
 }
 
 void process_input(void) {
@@ -44,19 +60,28 @@ void process_input(void) {
 
 }
 
+
 void update(void) {
-// TODO: add update logic
+    for (int i = 0; i < N_POINTS; i++) {
+        vec3_t point = cube_points[i]; 
+
+        point.z -= camera_position.z;
+
+        vec2_t projected_point = project(point, fov_factor);
+        projected_points[i] = projected_point;
+    }
 }
 
 
 
 void render(void) {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
-    render_color_buffer();
+    for (int i = 0; i < N_POINTS; i++) {
+        vec2_t projected_point = projected_points[i];
+        draw_rect(projected_point.x + (width / 2), projected_point.y + (height / 2), 4, 4, 0xFFFFFF00);
+    }
 
-    clear_color_buffer(0xFFFFFF00);
-    draw_pixel(100, 100, 0xFF0000FF);
+    render_color_buffer();
+    clear_color_buffer(0xFF000000);
 
     
     SDL_RenderPresent(renderer);

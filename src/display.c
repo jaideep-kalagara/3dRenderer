@@ -42,6 +42,18 @@ bool initialize_window(void) {
 
     SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
+    color_buffer = (uint32_t*) malloc(sizeof(uint32_t) * width * height);
+    if (!color_buffer) {
+        fprintf(stderr, "Failed to allocate color buffer\n");
+        return false;
+    }
+
+    color_buffer_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height);
+    if (!color_buffer_texture) {
+        fprintf(stderr, "Failed to create color buffer texture: %s\n", SDL_GetError());
+        return false;
+    }
+
     return true;
 }
 
@@ -55,7 +67,7 @@ void draw_grid(int spacing, uint32_t color) {
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
             if (i % spacing == 0 || j % spacing == 0) {
-                color_buffer[get_pixel(i, j)] = color;
+                draw_pixel(i, j, color);
             }
         }
     }
@@ -65,7 +77,7 @@ void draw_grid(int spacing, uint32_t color) {
 void draw_rect(int x, int y, int w, int h, uint32_t color) {
     for (int i = x; i < x + w; i++) {
         for (int j = y; j < y + h; j++) {
-            color_buffer[get_pixel(i, j)] = color;
+            draw_pixel(x, y, color);
         }
     }
 }
