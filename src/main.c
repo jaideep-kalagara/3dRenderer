@@ -30,9 +30,10 @@ void setup(void) {
     // create SDL window
     is_running = initialize_window();
 
-    int point_count = 0;
+    
     // start loading array of vectors
     // from -1 to 1 (9x9x9 cube)
+    int point_count = 0;
     for (float x = -1; x <= 1; x += 0.25) {
         for (float y = -1; y <= 1; y += 0.25) {
             for (float z = -1; z <= 1; z += 0.25) {
@@ -63,8 +64,10 @@ void process_input(void) {
 
 void update(void) {
     for (int i = 0; i < N_POINTS; i++) {
-        vec3_t point = cube_points[i]; 
+        vec3_t point = cube_points[i];
 
+        point.x -= camera_position.x;
+        point.y -= camera_position.y;
         point.z -= camera_position.z;
 
         vec2_t projected_point = project(point, fov_factor);
