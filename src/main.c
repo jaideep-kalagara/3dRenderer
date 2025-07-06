@@ -29,6 +29,7 @@ bool initialize_window(void) {
     // get full screen
     SDL_DisplayMode display_mode;
     SDL_GetDesktopDisplayMode(0, &display_mode);
+    // 800x600 resoulution if commented
     width = display_mode.w;
     height = display_mode.h;
 
@@ -44,6 +45,7 @@ bool initialize_window(void) {
         return false;
     }
 
+    SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
 
     return true;
 }
@@ -93,6 +95,25 @@ void clear_color_buffer(uint32_t color) {
     }
 }
 
+void draw_grid(int spacing, uint32_t color) {
+    for (int i = 0; i < width; i++) {
+        for (int j = 0; j < height; j++) {
+            if (i % spacing == 0 || j % spacing == 0) {
+                color_buffer[get_pixel(i, j)] = color;
+            }
+        }
+    }
+}
+
+
+void draw_rect(int x, int y, int w, int h, uint32_t color) {
+    for (int i = x; i < x + w; i++) {
+        for (int j = y; j < y + h; j++) {
+            color_buffer[get_pixel(i, j)] = color;
+        }
+    }
+}
+
 void render_color_buffer(void) {
     SDL_UpdateTexture(color_buffer_texture, NULL, color_buffer, (int)width * sizeof(uint32_t));
     SDL_RenderCopy(renderer, color_buffer_texture, NULL, NULL);
@@ -104,6 +125,7 @@ void render(void) {
     render_color_buffer();
 
     clear_color_buffer(0xFFFFFF00);
+    draw_rect(100, 100, 100, 100, 0xFF0000FF);
 
     
     SDL_RenderPresent(renderer);
