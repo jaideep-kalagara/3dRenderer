@@ -1,6 +1,6 @@
 build:
 	mkdir -p build
-	gcc -Wall -std=c99 src/*.c -Isrc/headers -lSDL2 -o build/out
+	gcc -Wall -std=c99 src/*.c -Isrc/headers -lSDL2 -lm -o build/out
 	
 
 run:

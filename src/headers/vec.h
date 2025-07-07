@@ -15,4 +15,6 @@ typedef struct {
 
 
 
+vec3_t vec3_rotate(vec3_t v, vec3_t a);
+
 #endif
